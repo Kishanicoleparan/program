@@ -197,7 +197,7 @@ public java.util.List<java.util.Map<String, Object>> fetchRecords(String sqlQuer
 
 
 // Method to hash passwords using SHA-256
-public static String hashPassword(String password) {
+public String hashPassword(String password) {
     try {
         java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-256");
         byte[] hashedBytes = md.digest(password.getBytes(java.nio.charset.StandardCharsets.UTF_8));

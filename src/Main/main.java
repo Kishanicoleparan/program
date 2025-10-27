@@ -23,8 +23,11 @@ public class main {
                 String email = dashboard.getEmailInput(sc);
                 System.out.print("Enter Password: ");
                 String pass = sc.nextLine();
+                
+                String hash = con.hashPassword(pass);
+                
                 List<Map<String, Object>> result = con.fetchRecords(
-                    "SELECT * FROM tbl_users WHERE u_email=? AND u_pass=?", email, pass);
+                    "SELECT * FROM tbl_users WHERE u_email=? AND u_pass=?", email, hash);
 
                 if (result.isEmpty()) {
                     System.out.println("❌ Invalid credentials!");
@@ -72,8 +75,10 @@ public class main {
                 int typeSel = dashboard.getIntInput(sc, "Select Type (1=Admin, 2=Staff, 3=Customer): ");
                 String userType = (typeSel == 1) ? "Admin" : (typeSel == 2 ? "Staff" : "Customer");
 
+                String hash = con.hashPassword(pass);
+                
                 con.addRecord("INSERT INTO tbl_users(u_name, u_email, u_pass, u_type, u_status) VALUES (?, ?, ?, ?, 'Pending')",
-                        name, email, pass, userType);
+                        name, email, hash, userType);
                 System.out.println("✅ Registration submitted! Await admin approval.");
 
             } else if (choice == 3) {
