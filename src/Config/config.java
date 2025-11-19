@@ -195,7 +195,6 @@ public java.util.List<java.util.Map<String, Object>> fetchRecords(String sqlQuer
 }
 
 
-
 // Method to hash passwords using SHA-256
 public String hashPassword(String password) {
     try {
@@ -216,6 +215,47 @@ public String hashPassword(String password) {
     }
 }
 
+// Get a single int value from a query (e.g., SELECT COUNT(*) ...)
+public int getSingleInt(String sql, Object... values) {
+    int result = 0;
+    try (Connection conn = this.connectDB();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        for (int i = 0; i < values.length; i++) {
+            pstmt.setObject(i + 1, values[i]);
+        }
+
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            result = rs.getInt(1);
+        }
+
+    } catch (SQLException e) {
+        System.out.println("Error in getSingleInt: " + e.getMessage());
+    }
+    return result;
+}
+
+// Get a single double value from a query (e.g., SELECT price ...)
+public double getSingleDouble(String sql, Object... values) {
+    double result = 0.0;
+    try (Connection conn = this.connectDB();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        for (int i = 0; i < values.length; i++) {
+            pstmt.setObject(i + 1, values[i]);
+        }
+
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            result = rs.getDouble(1);
+        }
+
+    } catch (SQLException e) {
+        System.out.println("Error in getSingleDouble: " + e.getMessage());
+    }
+    return result;
+}
 
 
 
